@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="./assets/img/book-2-fill.svg" type="image/svg" />
+	<link rel="stylesheet" href="./assets/css/style.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+	<title>Eagles Airlines | Passagens</title>
+</head>
+
+<body>
+	<header class="header">
+
+		<nav class="navbar col-12 position-fixed navbar-expand-lg navbar-dark"
+			style="background-color: #0b0744; z-index: 999;">
+			<div class="container-fluid col-11 m-auto">
+				<a class="navbar-brand" href="index.html"> <img src="./assets/imagens/eagleslogo.PNG" alt="Bootstrap"
+						width="150" height="70">
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<ul class="nav justify-content-center">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" th:href="@{/}"> Home </a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/passageiro}"> Passageiros </a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/passagem}"> Passagens </a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/pedido}"> Pedidos </a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<main class="newsletter">
+		<section class="container">
+
+			<div class="p-4">
+				<h1>Passagens</h1>
+				<table class="table table-responsive table-hover">
+					<thead class="table-dark">
+						<tr>
+							<th scope="col">Id passagem</th>
+							<th scope="col">Quantidade</th>
+							<th scope="col">Origem</th>
+							<th scope="col">Destino</th>
+							<th scope="col">Valor</th>
+							<th scope="col">Numero do Pedido</th>
+						</tr>
+					</thead>
+					<tbody>
+
+
+						<tr th:each="psgm : ${passagem}">
+							<td th:text=${psgm.id_passagem}></td>
+							<td th:text=${psgm.quantidade}></td>
+							<td th:text=${psgm.origem}></td>
+							<td th:text=${psgm.destino}></td>
+							<td th:text=${psgm.valor_passagem}></td>
+							<td th:text=${psgm.pedido.num_pedido}></td>
+							<td>
+								<div class="d-flex">
+									<a th:href="@{'/passagem'}" data-bs-toggle="modal"
+										th:data-bs-target="'#exampleModal' + ${psgm.id_passagem}" class="mx-1"
+										title="Editar">
+										<i class="ri-file-edit-line"></i>
+									</a>
+									<a th:href="@{'/passagem/' + ${psgm.id_passagem} + '/excluir'}" class="mx-1"
+										title="Cancelar" onclick="return confirm('Deseja excluir a passagem ?')">
+										<i class="ri-delete-bin-2-line"></i>
+									</a>
+
+
+									<!-- Modal -->
+									<div class="modal fade" th:id="'exampleModal' + ${psgm.id_passagem}" tabindex="-1"
+										aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h1 class="modal-title fs-5" id="exampleModalLabel"> Atualizar </h1>
+													<button type="button" class="btn-close" data-bs-dismiss="modal"
+														aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<form th:action="@{/passagem/cadastrar}" method="post"
+														th:object="${passagem}">
+
+														<input type="hidden" name="id_passagem" class="form-control"
+															th:value="${psgm.id_passagem}" />
+														<div class="form-group mb-3">
+															<label for="quantidade" class="form-label">
+																quantidade
+															</label>
+															<input type="number" id="quantidade" name="quantidade"
+																class="form-control" th:value="${psgm.quantidade}" />
+														</div>
+														<div class="form-group mb-3">
+															<label for="origem" class="form-label">
+																origem
+															</label>
+															<input type="text" id="origem" name="origem"
+																class="form-control" th:value="${psgm.origem}" />
+														</div>
+														<div class="form-group mb-3">
+															<label for="destino" class="form-label">
+																destino
+															</label>
+															<input type="text" id="destino" name="destino"
+																class="form-control" th:value="${psgm.destino}" />
+														</div>
+														<div class="form-group mb-3">
+															<label for="valor_passagem" class="form-label">
+																valor passagem
+															</label>
+															<input type="number" id="valor_passagem"
+																name="valor_passagem" class="form-control"
+																th:value="${psgm.valor_passagem}" />
+														</div>
+														<div class="form-group mb-3">
+															<label for="num_pedido" class="form-label">
+																num_pedido
+															</label>
+															<input type="number" id="num_pedido" name="num_pedido"
+																class="form-control"
+																th:value="${psgm.pedido.num_pedido}" />
+														</div>
+
+														<button type="submit" class="btn btn-primary">
+															Enviar
+														</button>
+														<a href="./passagem" class="btn btn-danger"
+															style="margin-left: 10px">
+															Cancelar
+														</a>
+													</form>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+
+
+
+								</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+				<a href="pedido-getCreate" class="btn btn-primary mb-2 botao1">
+					Cadastrar pedido </a>
+			</div>
+		</section>
+
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel"> Cadastrar </h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form th:action="@{/passagem/cadastrar}" method="post" th:object="${passagem}">
+
+
+							<div class="form-group mb-3">
+								<label for="quantidade" class="form-label">
+									quantidade
+								</label>
+								<input type="number" th:id="quantidade" th:name="quantidade" class="form-control"
+									th:field="*{quantidade}" />
+							</div>
+							<div class="form-group mb-3">
+								<label for="origem" class="form-label">
+									origem
+								</label>
+								<input type="text" th:id="origem" th:name="origem" class="form-control"
+									th:field="*{origem}" />
+							</div>
+							<div class="form-group mb-3">
+								<label for="destino" class="form-label">
+									destino
+								</label>
+								<input type="text" th:id="destino" th:name="destino" class="form-control"
+									th:field="*{destino}" />
+							</div>
+							<div class="form-group mb-3">
+								<label for="valor_passagem" class="form-label">
+									valor passagem
+								</label>
+								<input type="number" th:id="valor_passagem" th:name="valor_passagem"
+									class="form-control" th:field="*{valor_passagem}" />
+							</div>
+
+							<button type="submit" class="btn btn-primary">
+								Enviar
+							</button>
+							<a href="./passageiros" class="btn btn-danger" style="margin-left: 10px">
+								Cancelar
+							</a>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+
+	</main>
+	<footer class="footer">
+		<div class="footer_container">
+			<div class="newsletter">
+				<h1>Pensou que acabou? Clique em "Destino" e confira todos os
+					nossos pacotes de viagem!</h1>
+			</div>
+			<div class="footer_content_container">
+				<div class="footer_content">
+					<div class="contact">
+						<h1>Eagles Airlines, onde os sonhos ganham asas e a liberdade
+							encontra seu destino!</h1>
+						<p class="txt_md_white">kazuohirotokuta@aluno.recode.org.br</p>
+					</div>
+					<ul class="footer_links">
+						<li>
+							<h3 class="txt_lg_white">Menu</h3>
+						</li>
+						<li><a href="#" class="nav__link">Home</a></li>
+						<li><a href="#" class="nav__link">Destino</a></li>
+						<li><a href="#" class="nav__link">Promoções</a></li>
+						<li><a href="#" class="nav__link">Contato</a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
