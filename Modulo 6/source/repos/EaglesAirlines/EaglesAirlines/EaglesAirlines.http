@@ -1,0 +1,6 @@
+@EaglesAirlines_HostAddress = http://localhost:5109
+
+GET {{EaglesAirlines_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
